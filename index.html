@@ -1,104 +1,130 @@
-
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>算数 神経衰弱</title>
+<meta name="description" content="足し算・引き算でカードをめくる算数ゲーム">
+<meta name="theme-color" content="#1D9E75">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans)}
-#app{max-width:480px;margin:0 auto;padding:12px;min-height:600px}
-#screen-title{text-align:center;padding:24px 16px 8px;font-size:22px;font-weight:500;color:var(--text-primary)}
-#screen-sub{text-align:center;font-size:14px;color:var(--text-secondary);margin-bottom:24px}
-.diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.diff-btn{padding:18px 12px;border-radius:12px;border:0.5px solid var(--border-strong);background:var(--surface-2);cursor:pointer;text-align:center;transition:border-color 0.15s,background 0.15s;-webkit-tap-highlight-color:transparent}
-.diff-btn:active{background:var(--surface-1);transform:scale(0.97)}
-.diff-btn .d-icon{font-size:28px;margin-bottom:6px}
-.diff-btn .d-name{font-size:15px;font-weight:500;color:var(--text-primary)}
-.diff-btn .d-desc{font-size:12px;color:var(--text-secondary);margin-top:2px}
-.diff-btn.selected{border:2px solid var(--border-accent);background:var(--bg-accent)}
-#start-btn{width:100%;padding:16px;border-radius:12px;border:none;background:#1D9E75;color:#fff;font-size:17px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;display:none}
-#start-btn:active{transform:scale(0.98)}
-#ranking-btn{width:100%;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);font-size:14px;cursor:pointer;margin-top:10px;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px}
+body{background:#f0f4f0;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;min-height:100vh}
+#app{max-width:500px;margin:0 auto;padding:16px}
 
+.logo{font-size:48px;text-align:center;padding-top:24px}
+#screen-title{text-align:center;padding:12px 16px 6px;font-size:28px;font-weight:700;color:#1a2e1a;letter-spacing:0.05em}
+#screen-sub{text-align:center;font-size:16px;color:#5a7a5a;margin-bottom:24px}
+
+.diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.diff-btn{padding:20px 12px;border-radius:18px;border:2.5px solid #d4e8d4;background:#fff;cursor:pointer;text-align:center;transition:border-color 0.15s,background 0.15s,transform 0.1s;touch-action:manipulation;min-height:100px}
+.diff-btn:active{transform:scale(0.95)}
+.diff-btn .d-icon{font-size:36px;margin-bottom:8px}
+.diff-btn .d-name{font-size:17px;font-weight:700;color:#1a2e1a}
+.diff-btn .d-desc{font-size:13px;color:#5a7a5a;margin-top:4px}
+.diff-btn.selected{border-color:#1D9E75;background:#e8f7f1}
+
+#start-btn{width:100%;padding:20px;border-radius:18px;border:none;background:#1D9E75;color:#fff;font-size:20px;font-weight:700;cursor:pointer;touch-action:manipulation;display:none;box-shadow:0 4px 20px rgba(29,158,117,0.35);margin-bottom:12px}
+#start-btn:active{transform:scale(0.97)}
+#ranking-btn{width:100%;padding:16px;border-radius:18px;border:2.5px solid #d4e8d4;background:#fff;color:#5a7a5a;font-size:16px;font-weight:600;cursor:pointer;touch-action:manipulation}
+
+/* ゲーム画面 */
 #game-screen{display:none}
-#game-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-#back-btn{padding:8px 12px;border-radius:8px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);font-size:13px;cursor:pointer}
-#game-info{display:flex;gap:12px;align-items:center}
-.info-pill{background:var(--surface-1);border:0.5px solid var(--border);border-radius:20px;padding:5px 12px;font-size:13px;color:var(--text-secondary)}
-.info-pill span{font-weight:500;color:var(--text-primary)}
-#target-bar{background:var(--surface-1);border:0.5px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:12px;text-align:center;font-size:15px;color:var(--text-secondary)}
-#target-bar b{color:var(--text-primary);font-size:18px}
-#card-grid{display:grid;gap:8px}
-.card{border-radius:12px;border:0.5px solid var(--border);background:var(--surface-2);cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;transition:transform 0.12s;user-select:none;position:relative;overflow:hidden}
-.card:active{transform:scale(0.93)}
+#game-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+#back-btn{padding:12px 16px;border-radius:12px;border:2px solid #d4e8d4;background:#fff;color:#5a7a5a;font-size:15px;font-weight:600;cursor:pointer;touch-action:manipulation;flex-shrink:0}
+#game-info{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.info-pill{background:#fff;border:2px solid #d4e8d4;border-radius:20px;padding:8px 14px;font-size:15px;color:#5a7a5a;white-space:nowrap}
+.info-pill span{font-weight:700;color:#1a2e1a}
+
+#target-bar{background:#fff;border:2.5px solid #1D9E75;border-radius:18px;padding:14px 16px;margin-bottom:10px;text-align:center;font-size:17px;color:#5a7a5a}
+#target-bar b{color:#1D9E75;font-size:36px;font-weight:700;display:block;line-height:1.1}
+
+#hint-bar{text-align:center;font-size:14px;color:#5a7a5a;margin-bottom:10px;padding:10px;background:#fff;border-radius:12px;border:2px solid #d4e8d4}
+
+#progress-bar-wrap{height:8px;background:#d4e8d4;border-radius:4px;margin-bottom:12px;overflow:hidden}
+#progress-bar{height:100%;background:#1D9E75;border-radius:4px;transition:width 0.3s;width:0%}
+
+#card-grid{display:grid;gap:10px}
+.card{border-radius:16px;border:2.5px solid #d4e8d4;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;transition:transform 0.12s;user-select:none;position:relative;overflow:hidden}
+.card:active{transform:scale(0.90)}
 .card.face-down .card-back{display:flex}
 .card.face-down .card-front{display:none}
 .card.face-up .card-back{display:none}
 .card.face-up .card-front{display:flex}
-.card-back{width:100%;height:100%;align-items:center;justify-content:center;background:linear-gradient(135deg,#1D9E75 0%,#0F6E56 100%);border-radius:11px}
-.card-back-inner{width:60%;height:60%;border-radius:8px;border:2px solid rgba(255,255,255,0.3)}
-.card-front{width:100%;height:100%;align-items:center;justify-content:center;flex-direction:column}
-.card-num{font-weight:500;color:var(--text-primary)}
-.card.matched{background:var(--bg-success);border-color:var(--border-success)}
-.card.matched .card-num{color:var(--text-success)}
-.card.wrong{background:var(--bg-danger);border-color:var(--border-danger);animation:shake 0.3s}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.card-back{width:100%;height:100%;align-items:center;justify-content:center;background:linear-gradient(135deg,#1D9E75 0%,#0F6E56 100%);border-radius:14px}
+.card-back-pat{width:55%;height:55%;border-radius:8px;border:3px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;font-size:22px}
+.card-front{width:100%;height:100%;align-items:center;justify-content:center}
+.card-num{font-weight:700;color:#1a2e1a}
+.card.matched{background:#e8f7f1;border-color:#1D9E75}
+.card.matched .card-num{color:#1D9E75}
+.card.wrong{background:#fdf0f0;border-color:#e24b4a;animation:shake 0.35s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}60%{transform:translateX(8px)}}
 
-#result-screen{display:none;text-align:center;padding:20px 16px}
-#result-icon{font-size:56px;margin-bottom:12px}
-#result-title{font-size:22px;font-weight:500;margin-bottom:6px;color:var(--text-primary)}
-#result-stats{background:var(--surface-1);border-radius:12px;padding:16px;margin:16px 0;text-align:left}
-.stat-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;color:var(--text-secondary);border-bottom:0.5px solid var(--border)}
+/* 結果 */
+#result-screen{display:none;text-align:center;padding:24px 16px}
+#result-icon{font-size:72px;margin-bottom:12px}
+#result-title{font-size:28px;font-weight:700;margin-bottom:6px;color:#1a2e1a}
+#result-sub{font-size:16px;color:#5a7a5a;margin-bottom:16px}
+#score-big{font-size:56px;font-weight:700;color:#1D9E75;text-align:center;margin:8px 0}
+.score-label{font-size:16px;color:#5a7a5a;text-align:center;margin-bottom:16px}
+#result-stats{background:#fff;border-radius:18px;border:2px solid #d4e8d4;padding:16px;margin:0 0 16px;text-align:left}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;font-size:16px;color:#5a7a5a;border-bottom:1.5px solid #eef5ee}
 .stat-row:last-child{border-bottom:none}
-.stat-row b{color:var(--text-primary)}
-#play-again-btn{width:100%;padding:16px;border-radius:12px;border:none;background:#1D9E75;color:#fff;font-size:17px;font-weight:500;cursor:pointer;margin-bottom:10px}
-#to-menu-btn{width:100%;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);font-size:14px;cursor:pointer}
+.stat-row b{color:#1a2e1a;font-size:18px}
+#play-again-btn{width:100%;padding:20px;border-radius:18px;border:none;background:#1D9E75;color:#fff;font-size:18px;font-weight:700;cursor:pointer;margin-bottom:12px;box-shadow:0 4px 20px rgba(29,158,117,0.3);touch-action:manipulation}
+#to-menu-btn{width:100%;padding:16px;border-radius:18px;border:2.5px solid #d4e8d4;background:#fff;color:#5a7a5a;font-size:16px;font-weight:600;cursor:pointer;touch-action:manipulation}
 
+/* ランキング */
 #ranking-screen{display:none;padding:12px}
-#ranking-title{font-size:20px;font-weight:500;margin-bottom:16px;color:var(--text-primary);text-align:center}
-.rank-tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
-.rank-tab{padding:6px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);font-size:13px;cursor:pointer;white-space:nowrap}
-.rank-tab.active{background:var(--bg-accent);color:var(--text-accent);border-color:var(--border-accent)}
+#ranking-title{font-size:22px;font-weight:700;margin-bottom:16px;color:#1a2e1a;text-align:center}
+.rank-tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.rank-tab{padding:10px 18px;border-radius:20px;border:2px solid #d4e8d4;background:#fff;color:#5a7a5a;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;touch-action:manipulation;flex-shrink:0}
+.rank-tab.active{background:#1D9E75;color:#fff;border-color:#1D9E75}
 #rank-list{list-style:none}
-.rank-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:var(--surface-1);border:0.5px solid var(--border);margin-bottom:8px}
-.rank-no{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;background:var(--surface-0);color:var(--text-secondary);flex-shrink:0}
+.rank-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:#fff;border:2px solid #d4e8d4;margin-bottom:10px}
+.rank-no{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;background:#eef5ee;color:#5a7a5a;flex-shrink:0}
 .rank-no.gold{background:#FAC775;color:#412402}
 .rank-no.silver{background:#D3D1C7;color:#2C2C2A}
 .rank-no.bronze{background:#F5C4B3;color:#4A1B0C}
 .rank-info{flex:1}
-.rank-date{font-size:12px;color:var(--text-muted)}
-.rank-score{font-size:15px;font-weight:500;color:var(--text-primary)}
-.rank-detail{font-size:12px;color:var(--text-secondary)}
-.empty-rank{text-align:center;padding:32px;color:var(--text-muted);font-size:14px}
-#back-rank-btn{width:100%;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);font-size:14px;cursor:pointer;margin-top:6px}
+.rank-score{font-size:18px;font-weight:700;color:#1a2e1a}
+.rank-detail{font-size:13px;color:#5a7a5a;margin-top:2px}
+.rank-date{font-size:12px;color:#aac4aa}
+.empty-rank{text-align:center;padding:40px;color:#aac4aa;font-size:16px;line-height:1.8}
+#back-rank-btn{width:100%;padding:16px;border-radius:18px;border:2.5px solid #d4e8d4;background:#fff;color:#5a7a5a;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px;touch-action:manipulation}
 </style>
-
-<h2 class="sr-only">算数神経衰弱ゲーム — カードをめくって足し算・引き算を完成させよう</h2>
+</head>
+<body>
 <div id="app">
 
 <div id="title-screen">
+  <div class="logo">🧮</div>
   <div id="screen-title">算数 神経衰弱</div>
-  <div id="screen-sub">カードをめくって計算を完成させよう</div>
+  <div id="screen-sub">カードをめくって計算を完成させよう！</div>
   <div class="diff-grid">
     <div class="diff-btn" data-diff="easy" onclick="selectDiff(this)">
       <div class="d-icon">🌱</div>
       <div class="d-name">かんたん</div>
-      <div class="d-desc">1〜5 · 8枚</div>
+      <div class="d-desc">1〜5 · 8まい</div>
     </div>
     <div class="diff-btn" data-diff="normal" onclick="selectDiff(this)">
       <div class="d-icon">⭐</div>
       <div class="d-name">ふつう</div>
-      <div class="d-desc">1〜10 · 12枚</div>
+      <div class="d-desc">1〜10 · 12まい</div>
     </div>
     <div class="diff-btn" data-diff="hard" onclick="selectDiff(this)">
       <div class="d-icon">🔥</div>
       <div class="d-name">むずかしい</div>
-      <div class="d-desc">1〜15 · 16枚</div>
+      <div class="d-desc">1〜15 · 16まい</div>
     </div>
     <div class="diff-btn" data-diff="expert" onclick="selectDiff(this)">
       <div class="d-icon">💎</div>
       <div class="d-name">エキスパート</div>
-      <div class="d-desc">1〜20 · 20枚</div>
+      <div class="d-desc">1〜20 · 20まい</div>
     </div>
   </div>
-  <button id="start-btn" onclick="startGame()">ゲームスタート</button>
-  <button id="ranking-btn" onclick="showRanking()"><i class="ti ti-trophy" aria-hidden="true"></i> ランキングを見る</button>
+  <button id="start-btn" onclick="startGame()">ゲームスタート 🎮</button>
+  <button id="ranking-btn" onclick="showRanking()">🏆 ランキングを見る</button>
 </div>
 
 <div id="game-screen">
@@ -106,264 +132,198 @@ body{font-family:var(--font-sans)}
     <button id="back-btn" onclick="goMenu()">← もどる</button>
     <div id="game-info">
       <div class="info-pill">⏱ <span id="timer-disp">0</span>秒</div>
-      <div class="info-pill">ミス <span id="miss-disp">0</span></div>
+      <div class="info-pill">ミス <span id="miss-disp">0</span>回</div>
     </div>
   </div>
-  <div id="target-bar">目標の数字：<b id="target-num">?</b></div>
+  <div id="target-bar">目標の数字<b id="target-num">?</b></div>
+  <div id="hint-bar">足し算か引き算で <b id="hint-num">?</b> になるペアを見つけよう！</div>
+  <div id="progress-bar-wrap"><div id="progress-bar"></div></div>
   <div id="card-grid"></div>
 </div>
 
 <div id="result-screen">
   <div id="result-icon">🎉</div>
   <div id="result-title">クリア！</div>
+  <div id="result-sub">よくできました！</div>
+  <div id="score-big">0</div>
+  <div class="score-label">点</div>
   <div id="result-stats">
     <div class="stat-row">難易度 <b id="r-diff">—</b></div>
     <div class="stat-row">タイム <b id="r-time">—</b></div>
     <div class="stat-row">ミス数 <b id="r-miss">—</b></div>
-    <div class="stat-row">スコア <b id="r-score">—</b></div>
   </div>
-  <button id="play-again-btn" onclick="startGame()">もう一度あそぶ</button>
+  <button id="play-again-btn" onclick="startGame()">もう一度あそぶ 🔄</button>
   <button id="to-menu-btn" onclick="goMenu()">メニューにもどる</button>
 </div>
 
 <div id="ranking-screen">
-  <div id="ranking-title"><i class="ti ti-trophy" aria-hidden="true"></i> ランキング</div>
+  <div id="ranking-title">🏆 ランキング</div>
   <div class="rank-tabs" id="rank-tabs"></div>
   <ul id="rank-list"></ul>
   <button id="back-rank-btn" onclick="goMenu()">メニューにもどる</button>
 </div>
 
 </div>
-
 <script>
-const DIFFS = {
-  easy:   {name:'かんたん',  max:5,  pairs:4,  cols:4},
-  normal: {name:'ふつう',    max:10, pairs:6,  cols:4},
-  hard:   {name:'むずかしい', max:15, pairs:8,  cols:4},
-  expert: {name:'エキスパート',max:20, pairs:10, cols:5},
+const DIFFS={
+  easy:  {name:'かんたん',   max:5,  pairs:4,  cols:4, cardH:90},
+  normal:{name:'ふつう',     max:10, pairs:6,  cols:4, cardH:84},
+  hard:  {name:'むずかしい',  max:15, pairs:8,  cols:4, cardH:76},
+  expert:{name:'エキスパート', max:20, pairs:10, cols:5, cardH:68},
 };
-const RANK_KEY = 'mathConc_ranks_v1';
+const RANK_KEY='mathConc_v2';
+let curDiff=null,target=0,cards=[],flipped=[],matched=0,misses=0,timerID=null,elapsed=0,busy=false,rankDiff='easy';
 
-let curDiff = null;
-let target = 0;
-let cards = [];
-let flipped = [];
-let matched = 0;
-let misses = 0;
-let timerID = null;
-let elapsed = 0;
-let busy = false;
-let rankDiff = 'easy';
-
-function selectDiff(el) {
+function selectDiff(el){
   document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('selected'));
   el.classList.add('selected');
-  curDiff = el.dataset.diff;
-  document.getElementById('start-btn').style.display = 'block';
+  curDiff=el.dataset.diff;
+  document.getElementById('start-btn').style.display='block';
 }
 
 function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 
-function generateCards(diff) {
-  const d = DIFFS[diff];
-  const op = Math.random()<0.5 ? '+' : '-';
-  let t, pairs = [];
-  let tries = 0;
-  while(pairs.length < d.pairs && tries < 1000) {
+function generateCards(diff){
+  const d=DIFFS[diff];
+  let t,pairs=[],op=Math.random()<0.5?'+':'-',tries=0;
+  while(pairs.length<d.pairs&&tries<2000){
     tries++;
-    if(op === '+') {
-      const a = randInt(1, d.max);
-      const b = randInt(1, d.max);
-      t = t === undefined ? a+b : t;
-      if(a+b === t && !pairs.find(p=>p.a===a&&p.b===b) && !pairs.find(p=>p.a===b&&p.b===a)) {
-        pairs.push({a, b, op:'+'});
-      }
-    } else {
-      const a = randInt(2, d.max);
-      const b = randInt(1, a-1);
-      t = t === undefined ? a-b : t;
-      if(a-b === t && !pairs.find(p=>p.a===a&&p.b===b)) {
-        pairs.push({a, b, op:'-'});
-      }
+    if(op==='+'){
+      const a=randInt(1,d.max),b=randInt(1,d.max);
+      if(t===undefined)t=a+b;
+      if(a+b===t&&!pairs.find(p=>p.a===a&&p.b===b)&&!pairs.find(p=>p.a===b&&p.b===a))pairs.push({a,b});
+    }else{
+      const a=randInt(2,d.max),b=randInt(1,a-1);
+      if(t===undefined)t=a-b;
+      if(a-b===t&&!pairs.find(p=>p.a===a&&p.b===b))pairs.push({a,b});
     }
   }
-  if(pairs.length < d.pairs) {
-    t = undefined;
-    pairs = [];
-    tries = 0;
-    const newOp = op==='+' ? '-' : '+';
-    while(pairs.length < d.pairs && tries < 2000) {
+  if(pairs.length<d.pairs){
+    t=undefined;pairs=[];op=op==='+'?'-':'+';tries=0;
+    while(pairs.length<d.pairs&&tries<3000){
       tries++;
-      if(newOp==='+'){
-        const a=randInt(1,d.max),b=randInt(1,d.max);
-        t=t===undefined?a+b:t;
-        if(a+b===t&&!pairs.find(p=>p.a===a&&p.b===b)&&!pairs.find(p=>p.a===b&&p.b===a))pairs.push({a,b,op:'+'});
-      } else {
-        const a=randInt(2,d.max),b=randInt(1,a-1);
-        t=t===undefined?a-b:t;
-        if(a-b===t&&!pairs.find(p=>p.a===a&&p.b===b))pairs.push({a,b,op:'-'});
-      }
+      if(op==='+'){const a=randInt(1,d.max),b=randInt(1,d.max);if(t===undefined)t=a+b;if(a+b===t&&!pairs.find(p=>p.a===a&&p.b===b)&&!pairs.find(p=>p.a===b&&p.b===a))pairs.push({a,b});}
+      else{const a=randInt(2,d.max),b=randInt(1,a-1);if(t===undefined)t=a-b;if(a-b===t&&!pairs.find(p=>p.a===a&&p.b===b))pairs.push({a,b});}
     }
   }
-  target = t;
-  let nums = [];
-  pairs.forEach(p=>{ nums.push(p.a); nums.push(p.b); });
+  target=t;
+  let nums=[];
+  pairs.forEach(p=>{nums.push(p.a);nums.push(p.b);});
   for(let i=nums.length-1;i>0;i--){const j=randInt(0,i);[nums[i],nums[j]]=[nums[j],nums[i]];}
-  return {target, nums, pairs};
+  return{target,nums,pairs};
 }
 
-function startGame() {
-  if(!curDiff) return;
-  const d = DIFFS[curDiff];
-  const {target:t, nums, pairs} = generateCards(curDiff);
-  target = t;
-  matched = 0; misses = 0; elapsed = 0; flipped = []; busy = false;
-  cards = nums.map((n,i)=>({id:i, num:n, state:'down', pairKey: makePairKey(n,pairs)}));
-
+function startGame(){
+  if(!curDiff)return;
+  const d=DIFFS[curDiff];
+  const{target:t,nums}=generateCards(curDiff);
+  target=t;matched=0;misses=0;elapsed=0;flipped=[];busy=false;
+  cards=nums.map((n,i)=>({id:i,num:n,state:'down'}));
   show('game');
-  document.getElementById('target-num').textContent = target;
-  document.getElementById('miss-disp').textContent = '0';
-  document.getElementById('timer-disp').textContent = '0';
+  document.getElementById('target-num').textContent=target;
+  document.getElementById('hint-num').textContent=target;
+  document.getElementById('miss-disp').textContent='0';
+  document.getElementById('timer-disp').textContent='0';
+  document.getElementById('progress-bar').style.width='0%';
 
-  const grid = document.getElementById('card-grid');
-  const size = curDiff==='expert' ? 62 : curDiff==='hard' ? 68 : 76;
-  grid.style.gridTemplateColumns = `repeat(${d.cols}, 1fr)`;
-  grid.innerHTML = '';
+  const grid=document.getElementById('card-grid');
+  grid.style.gridTemplateColumns=`repeat(${d.cols},1fr)`;
+  grid.innerHTML='';
 
+  const fontSize=d.cols===5?28:32;
   cards.forEach((c,i)=>{
-    const el = document.createElement('div');
-    el.className = 'card face-down';
-    el.style.height = size+'px';
-    el.dataset.idx = i;
-    el.innerHTML = `<div class="card-back"><div class="card-back-inner"></div></div><div class="card-front"><span class="card-num" style="font-size:${size>68?24:20}px">${c.num}</span></div>`;
-    el.addEventListener('click', ()=>flipCard(i));
+    const el=document.createElement('div');
+    el.className='card face-down';
+    el.style.height=d.cardH+'px';
+    el.dataset.idx=i;
+    el.innerHTML=`<div class="card-back"><div class="card-back-pat">✦</div></div><div class="card-front"><span class="card-num" style="font-size:${fontSize}px">${c.num}</span></div>`;
+    el.addEventListener('click',()=>flipCard(i));
     grid.appendChild(el);
   });
 
   clearInterval(timerID);
-  timerID = setInterval(()=>{
-    elapsed++;
-    document.getElementById('timer-disp').textContent = elapsed;
-  },1000);
+  timerID=setInterval(()=>{elapsed++;document.getElementById('timer-disp').textContent=elapsed;},1000);
 }
 
-function makePairKey(n, pairs) {
-  for(const p of pairs){
-    if(p.a===n||p.b===n) return p.a+'-'+p.b;
-  }
-  return n+'';
-}
-
-function flipCard(idx) {
-  if(busy) return;
-  const c = cards[idx];
-  if(c.state!=='down') return;
-  if(flipped.length>=2) return;
-  c.state = 'up';
-  updateCard(idx);
+function flipCard(idx){
+  if(busy)return;
+  const c=cards[idx];
+  if(c.state!=='down'||flipped.length>=2)return;
+  c.state='up';updateCard(idx);
   flipped.push(idx);
-  if(flipped.length===2) checkPair();
+  if(flipped.length===2)checkPair();
 }
 
-function checkPair() {
-  busy = true;
-  const [i,j] = flipped;
-  const a = cards[i], b = cards[j];
-  const sumOK = (a.num+b.num===target);
-  const diffOK = (Math.abs(a.num-b.num)===target);
-  if(sumOK || diffOK) {
-    a.state = 'matched'; b.state = 'matched';
-    updateCard(i,'matched'); updateCard(j,'matched');
-    matched += 2;
-    flipped = [];
-    busy = false;
-    if(matched===cards.length) endGame();
-  } else {
+function checkPair(){
+  busy=true;
+  const[i,j]=flipped;
+  const a=cards[i],b=cards[j];
+  const ok=(a.num+b.num===target)||(Math.abs(a.num-b.num)===target);
+  if(ok){
+    a.state='matched';b.state='matched';
+    updateCard(i,'matched');updateCard(j,'matched');
+    matched+=2;flipped=[];busy=false;
+    document.getElementById('progress-bar').style.width=(matched/cards.length*100)+'%';
+    if(matched===cards.length)setTimeout(endGame,400);
+  }else{
     misses++;
-    document.getElementById('miss-disp').textContent = misses;
-    updateCard(i,'wrong'); updateCard(j,'wrong');
-    setTimeout(()=>{
-      a.state = 'down'; b.state = 'down';
-      updateCard(i); updateCard(j);
-      flipped = [];
-      busy = false;
-    }, 700);
+    document.getElementById('miss-disp').textContent=misses;
+    updateCard(i,'wrong');updateCard(j,'wrong');
+    setTimeout(()=>{a.state='down';b.state='down';updateCard(i);updateCard(j);flipped=[];busy=false;},800);
   }
 }
 
-function updateCard(idx, extra) {
-  const el = document.querySelector(`[data-idx="${idx}"]`);
-  if(!el) return;
-  const c = cards[idx];
-  el.className = 'card ' + (c.state==='down'?'face-down':c.state==='up'?'face-up':c.state==='matched'?'face-up matched':'face-up wrong');
-  if(extra==='wrong') el.classList.add('wrong');
+function updateCard(idx,extra){
+  const el=document.querySelector(`[data-idx="${idx}"]`);
+  if(!el)return;
+  const c=cards[idx];
+  const cls={down:'face-down',up:'face-up',matched:'face-up matched',wrong:'face-up wrong'};
+  el.className='card '+(cls[c.state]||'face-down');
 }
 
-function endGame() {
+function endGame(){
   clearInterval(timerID);
-  const d = DIFFS[curDiff];
-  const baseScore = d.pairs * 100;
-  const timeBonus = Math.max(0, 300 - elapsed) * 2;
-  const missPenalty = misses * 20;
-  const score = Math.max(0, baseScore + timeBonus - missPenalty);
-
-  document.getElementById('r-diff').textContent = d.name;
-  document.getElementById('r-time').textContent = elapsed+'秒';
-  document.getElementById('r-miss').textContent = misses+'回';
-  document.getElementById('r-score').textContent = score+'点';
-
-  saveRank(curDiff, score, elapsed, misses);
+  const d=DIFFS[curDiff];
+  const score=Math.max(0,d.pairs*100+Math.max(0,300-elapsed)*2-misses*20);
+  document.getElementById('r-diff').textContent=d.name;
+  document.getElementById('r-time').textContent=elapsed+'秒';
+  document.getElementById('r-miss').textContent=misses+'回';
+  document.getElementById('score-big').textContent=score;
+  document.getElementById('result-icon').textContent=score>=500?'🏆':score>=300?'🎉':score>=100?'👍':'😊';
+  saveRank(curDiff,score,elapsed,misses);
   show('result');
 }
 
-function saveRank(diff, score, time, miss) {
-  let data = {};
-  try { data = JSON.parse(localStorage.getItem(RANK_KEY)||'{}'); } catch(e){}
-  if(!data[diff]) data[diff]=[];
+function saveRank(diff,score,time,miss){
+  let data={};
+  try{data=JSON.parse(localStorage.getItem(RANK_KEY)||'{}');}catch(e){}
+  if(!data[diff])data[diff]=[];
   data[diff].push({score,time,miss,date:new Date().toLocaleDateString('ja-JP')});
   data[diff].sort((a,b)=>b.score-a.score);
-  data[diff] = data[diff].slice(0,10);
-  try { localStorage.setItem(RANK_KEY, JSON.stringify(data)); } catch(e){}
+  data[diff]=data[diff].slice(0,10);
+  try{localStorage.setItem(RANK_KEY,JSON.stringify(data));}catch(e){}
 }
 
-function showRanking() {
-  let data = {};
-  try { data = JSON.parse(localStorage.getItem(RANK_KEY)||'{}'); } catch(e){}
-  const tabs = document.getElementById('rank-tabs');
-  tabs.innerHTML = '';
+function showRanking(){
+  let data={};
+  try{data=JSON.parse(localStorage.getItem(RANK_KEY)||'{}');}catch(e){}
+  const tabs=document.getElementById('rank-tabs');
+  tabs.innerHTML='';
   Object.keys(DIFFS).forEach(k=>{
-    const btn = document.createElement('button');
-    btn.className = 'rank-tab'+(k===rankDiff?' active':'');
-    btn.textContent = DIFFS[k].name;
-    btn.onclick = ()=>{ rankDiff=k; showRanking(); };
+    const btn=document.createElement('button');
+    btn.className='rank-tab'+(k===rankDiff?' active':'');
+    btn.textContent=DIFFS[k].name;
+    btn.onclick=()=>{rankDiff=k;showRanking();};
     tabs.appendChild(btn);
   });
-  const list = document.getElementById('rank-list');
-  const entries = data[rankDiff]||[];
-  if(entries.length===0){
-    list.innerHTML='<div class="empty-rank">まだ記録がありません</div>';
-  } else {
-    list.innerHTML = entries.map((e,i)=>`
-      <li class="rank-item">
-        <div class="rank-no ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i+1}</div>
-        <div class="rank-info">
-          <div class="rank-score">${e.score}点</div>
-          <div class="rank-detail">${e.time}秒 · ミス${e.miss}回</div>
-        </div>
-        <div class="rank-date">${e.date}</div>
-      </li>`).join('');
-  }
+  const list=document.getElementById('rank-list');
+  const entries=data[rankDiff]||[];
+  list.innerHTML=entries.length?entries.map((e,i)=>`<li class="rank-item"><div class="rank-no ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i+1}</div><div class="rank-info"><div class="rank-score">${e.score}点</div><div class="rank-detail">${e.time}秒 · ミス${e.miss}回</div></div><div class="rank-date">${e.date}</div></li>`).join(''):'<div class="empty-rank">まだ記録がありません<br>挑戦してみよう！</div>';
   show('ranking');
 }
 
-function goMenu() {
-  clearInterval(timerID);
-  show('title');
-}
-
-function show(s) {
-  ['title','game','result','ranking'].forEach(n=>{
-    document.getElementById(n+'-screen').style.display = n===s?'block':'none';
-  });
-}
+function goMenu(){clearInterval(timerID);show('title');}
+function show(s){['title','game','result','ranking'].forEach(n=>{document.getElementById(n+'-screen').style.display=n===s?'block':'none';});}
 </script>
+</body>
+</html>
