@@ -11,11 +11,9 @@
 html{font-size:16px}
 body{background:#f0f4f0;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;min-height:100vh}
 #app{max-width:500px;margin:0 auto;padding:16px}
-
 .logo{font-size:48px;text-align:center;padding-top:24px}
 #screen-title{text-align:center;padding:12px 16px 6px;font-size:28px;font-weight:700;color:#1a2e1a;letter-spacing:0.05em}
 #screen-sub{text-align:center;font-size:16px;color:#5a7a5a;margin-bottom:24px}
-
 .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
 .diff-btn{padding:20px 12px;border-radius:18px;border:2.5px solid #d4e8d4;background:#fff;cursor:pointer;text-align:center;transition:border-color 0.15s,background 0.15s,transform 0.1s;touch-action:manipulation;min-height:100px}
 .diff-btn:active{transform:scale(0.95)}
@@ -23,27 +21,20 @@ body{background:#f0f4f0;font-family:-apple-system,BlinkMacSystemFont,'Hiragino S
 .diff-btn .d-name{font-size:17px;font-weight:700;color:#1a2e1a}
 .diff-btn .d-desc{font-size:13px;color:#5a7a5a;margin-top:4px}
 .diff-btn.selected{border-color:#1D9E75;background:#e8f7f1}
-
 #start-btn{width:100%;padding:20px;border-radius:18px;border:none;background:#1D9E75;color:#fff;font-size:20px;font-weight:700;cursor:pointer;touch-action:manipulation;display:none;box-shadow:0 4px 20px rgba(29,158,117,0.35);margin-bottom:12px}
 #start-btn:active{transform:scale(0.97)}
 #ranking-btn{width:100%;padding:16px;border-radius:18px;border:2.5px solid #d4e8d4;background:#fff;color:#5a7a5a;font-size:16px;font-weight:600;cursor:pointer;touch-action:manipulation}
-
-/* ゲーム画面 */
 #game-screen{display:none}
 #game-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
 #back-btn{padding:12px 16px;border-radius:12px;border:2px solid #d4e8d4;background:#fff;color:#5a7a5a;font-size:15px;font-weight:600;cursor:pointer;touch-action:manipulation;flex-shrink:0}
 #game-info{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .info-pill{background:#fff;border:2px solid #d4e8d4;border-radius:20px;padding:8px 14px;font-size:15px;color:#5a7a5a;white-space:nowrap}
 .info-pill span{font-weight:700;color:#1a2e1a}
-
 #target-bar{background:#fff;border:2.5px solid #1D9E75;border-radius:18px;padding:14px 16px;margin-bottom:10px;text-align:center;font-size:17px;color:#5a7a5a}
 #target-bar b{color:#1D9E75;font-size:36px;font-weight:700;display:block;line-height:1.1}
-
 #hint-bar{text-align:center;font-size:14px;color:#5a7a5a;margin-bottom:10px;padding:10px;background:#fff;border-radius:12px;border:2px solid #d4e8d4}
-
 #progress-bar-wrap{height:8px;background:#d4e8d4;border-radius:4px;margin-bottom:12px;overflow:hidden}
 #progress-bar{height:100%;background:#1D9E75;border-radius:4px;transition:width 0.3s;width:0%}
-
 #card-grid{display:grid;gap:10px}
 .card{border-radius:16px;border:2.5px solid #d4e8d4;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;transition:transform 0.12s;user-select:none;position:relative;overflow:hidden}
 .card:active{transform:scale(0.90)}
@@ -58,9 +49,9 @@ body{background:#f0f4f0;font-family:-apple-system,BlinkMacSystemFont,'Hiragino S
 .card.matched{background:#e8f7f1;border-color:#1D9E75}
 .card.matched .card-num{color:#1D9E75}
 .card.wrong{background:#fdf0f0;border-color:#e24b4a;animation:shake 0.35s}
+.card.auto-clear{background:#fff8e1;border-color:#FAC775;animation:pulse 0.5s}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}60%{transform:translateX(8px)}}
-
-/* 結果 */
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 #result-screen{display:none;text-align:center;padding:24px 16px}
 #result-icon{font-size:72px;margin-bottom:12px}
 #result-title{font-size:28px;font-weight:700;margin-bottom:6px;color:#1a2e1a}
@@ -72,9 +63,8 @@ body{background:#f0f4f0;font-family:-apple-system,BlinkMacSystemFont,'Hiragino S
 .stat-row:last-child{border-bottom:none}
 .stat-row b{color:#1a2e1a;font-size:18px}
 #play-again-btn{width:100%;padding:20px;border-radius:18px;border:none;background:#1D9E75;color:#fff;font-size:18px;font-weight:700;cursor:pointer;margin-bottom:12px;box-shadow:0 4px 20px rgba(29,158,117,0.3);touch-action:manipulation}
+#play-again-btn:active{transform:scale(0.98)}
 #to-menu-btn{width:100%;padding:16px;border-radius:18px;border:2.5px solid #d4e8d4;background:#fff;color:#5a7a5a;font-size:16px;font-weight:600;cursor:pointer;touch-action:manipulation}
-
-/* ランキング */
 #ranking-screen{display:none;padding:12px}
 #ranking-title{font-size:22px;font-weight:700;margin-bottom:16px;color:#1a2e1a;text-align:center}
 .rank-tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
@@ -173,6 +163,7 @@ const DIFFS={
 };
 const RANK_KEY='mathConc_v2';
 let curDiff=null,target=0,cards=[],flipped=[],matched=0,misses=0,timerID=null,elapsed=0,busy=false,rankDiff='easy';
+let pairMap={}; // カードidx→ペア相手のidxを管理
 
 function selectDiff(el){
   document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('selected'));
@@ -183,42 +174,95 @@ function selectDiff(el){
 
 function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 
+// ★修正：必ず全ペアが成立するカード生成
 function generateCards(diff){
   const d=DIFFS[diff];
-  let t,pairs=[],op=Math.random()<0.5?'+':'-',tries=0;
-  while(pairs.length<d.pairs&&tries<2000){
+  // 足し算か引き算をランダムに決める
+  const op=Math.random()<0.5?'+':'-';
+  let t, pairs=[], tries=0;
+
+  while(pairs.length<d.pairs && tries<5000){
     tries++;
     if(op==='+'){
-      const a=randInt(1,d.max),b=randInt(1,d.max);
-      if(t===undefined)t=a+b;
-      if(a+b===t&&!pairs.find(p=>p.a===a&&p.b===b)&&!pairs.find(p=>p.a===b&&p.b===a))pairs.push({a,b});
-    }else{
-      const a=randInt(2,d.max),b=randInt(1,a-1);
-      if(t===undefined)t=a-b;
-      if(a-b===t&&!pairs.find(p=>p.a===a&&p.b===b))pairs.push({a,b});
+      const a=randInt(1,d.max), b=randInt(1,d.max);
+      if(t===undefined) t=a+b;
+      if(a+b===t){
+        // 重複チェック（順不同）
+        const dup=pairs.some(p=>(p.a===a&&p.b===b)||(p.a===b&&p.b===a));
+        if(!dup) pairs.push({a,b});
+      }
+    } else {
+      const a=randInt(2,d.max), b=randInt(1,a-1);
+      if(t===undefined) t=a-b;
+      if(a-b===t){
+        const dup=pairs.some(p=>p.a===a&&p.b===b);
+        if(!dup) pairs.push({a,b});
+      }
     }
   }
+
+  // 十分なペアが集まらなかった場合は逆の演算子で再試行
   if(pairs.length<d.pairs){
-    t=undefined;pairs=[];op=op==='+'?'-':'+';tries=0;
-    while(pairs.length<d.pairs&&tries<3000){
+    const op2=op==='+'?'-':'+';
+    t=undefined; pairs=[]; tries=0;
+    while(pairs.length<d.pairs && tries<5000){
       tries++;
-      if(op==='+'){const a=randInt(1,d.max),b=randInt(1,d.max);if(t===undefined)t=a+b;if(a+b===t&&!pairs.find(p=>p.a===a&&p.b===b)&&!pairs.find(p=>p.a===b&&p.b===a))pairs.push({a,b});}
-      else{const a=randInt(2,d.max),b=randInt(1,a-1);if(t===undefined)t=a-b;if(a-b===t&&!pairs.find(p=>p.a===a&&p.b===b))pairs.push({a,b});}
+      if(op2==='+'){
+        const a=randInt(1,d.max), b=randInt(1,d.max);
+        if(t===undefined) t=a+b;
+        if(a+b===t){
+          const dup=pairs.some(p=>(p.a===a&&p.b===b)||(p.a===b&&p.b===a));
+          if(!dup) pairs.push({a,b});
+        }
+      } else {
+        const a=randInt(2,d.max), b=randInt(1,a-1);
+        if(t===undefined) t=a-b;
+        if(a-b===t){
+          const dup=pairs.some(p=>p.a===a&&p.b===b);
+          if(!dup) pairs.push({a,b});
+        }
+      }
     }
   }
+
   target=t;
-  let nums=[];
-  pairs.forEach(p=>{nums.push(p.a);nums.push(p.b);});
-  for(let i=nums.length-1;i>0;i--){const j=randInt(0,i);[nums[i],nums[j]]=[nums[j],nums[i]];}
-  return{target,nums,pairs};
+
+  // ペアをシャッフルしてカード配列を作る
+  // 各ペアを [a, b] として格納し、位置をシャッフル
+  let slots=[];
+  pairs.forEach((p,pi)=>{
+    slots.push({num:p.a, pairId:pi});
+    slots.push({num:p.b, pairId:pi});
+  });
+  // Fisher-Yates シャッフル
+  for(let i=slots.length-1;i>0;i--){
+    const j=randInt(0,i);
+    [slots[i],slots[j]]=[slots[j],slots[i]];
+  }
+
+  // pairMap を構築：同じpairIdを持つ2枚のidxを紐付け
+  pairMap={};
+  const pairIdxMap={};
+  slots.forEach((s,idx)=>{
+    if(pairIdxMap[s.pairId]===undefined){
+      pairIdxMap[s.pairId]=idx;
+    } else {
+      const other=pairIdxMap[s.pairId];
+      pairMap[idx]=other;
+      pairMap[other]=idx;
+    }
+  });
+
+  return slots.map(s=>s.num);
 }
 
 function startGame(){
   if(!curDiff)return;
   const d=DIFFS[curDiff];
-  const{target:t,nums}=generateCards(curDiff);
-  target=t;matched=0;misses=0;elapsed=0;flipped=[];busy=false;
+  const nums=generateCards(curDiff);
+  matched=0;misses=0;elapsed=0;flipped=[];busy=false;
   cards=nums.map((n,i)=>({id:i,num:n,state:'down'}));
+
   show('game');
   document.getElementById('target-num').textContent=target;
   document.getElementById('hint-num').textContent=target;
@@ -249,7 +293,8 @@ function flipCard(idx){
   if(busy)return;
   const c=cards[idx];
   if(c.state!=='down'||flipped.length>=2)return;
-  c.state='up';updateCard(idx);
+  c.state='up';
+  updateCard(idx);
   flipped.push(idx);
   if(flipped.length===2)checkPair();
 }
@@ -258,19 +303,72 @@ function checkPair(){
   busy=true;
   const[i,j]=flipped;
   const a=cards[i],b=cards[j];
-  const ok=(a.num+b.num===target)||(Math.abs(a.num-b.num)===target);
-  if(ok){
-    a.state='matched';b.state='matched';
+  const sumOK=a.num+b.num===target;
+  const diffOK=Math.abs(a.num-b.num)===target;
+
+  if(sumOK||diffOK){
+    matchCards(i,j);
+  } else {
+    // 数値上は合わないが、同じペアIDのカードなら自動クリア
+    if(pairMap[i]===j){
+      autoMatchCards(i,j);
+    } else {
+      misses++;
+      document.getElementById('miss-disp').textContent=misses;
+      updateCard(i,'wrong');updateCard(j,'wrong');
+      setTimeout(()=>{
+        a.state='down';b.state='down';
+        updateCard(i);updateCard(j);
+        flipped=[];busy=false;
+        checkLastPair(); // 残り2枚チェック
+      },800);
+    }
+  }
+}
+
+// 通常マッチ
+function matchCards(i,j){
+  cards[i].state='matched';cards[j].state='matched';
+  updateCard(i,'matched');updateCard(j,'matched');
+  matched+=2;flipped=[];busy=false;
+  updateProgress();
+  if(matched===cards.length) setTimeout(endGame,400);
+  else checkLastPair();
+}
+
+// 自動クリア（最後の2枚が数値的に合わない場合）
+function autoMatchCards(i,j){
+  cards[i].state='matched';cards[j].state='matched';
+  // 少し演出してからマッチ扱い
+  const el1=document.querySelector(`[data-idx="${i}"]`);
+  const el2=document.querySelector(`[data-idx="${j}"]`);
+  if(el1)el1.classList.add('auto-clear');
+  if(el2)el2.classList.add('auto-clear');
+  setTimeout(()=>{
     updateCard(i,'matched');updateCard(j,'matched');
     matched+=2;flipped=[];busy=false;
-    document.getElementById('progress-bar').style.width=(matched/cards.length*100)+'%';
-    if(matched===cards.length)setTimeout(endGame,400);
-  }else{
-    misses++;
-    document.getElementById('miss-disp').textContent=misses;
-    updateCard(i,'wrong');updateCard(j,'wrong');
-    setTimeout(()=>{a.state='down';b.state='down';updateCard(i);updateCard(j);flipped=[];busy=false;},800);
+    updateProgress();
+    if(matched===cards.length) setTimeout(endGame,400);
+  },500);
+}
+
+// 残り2枚だけになったら自動的にめくって確認
+function checkLastPair(){
+  const remaining=cards.filter(c=>c.state==='down');
+  if(remaining.length===2){
+    busy=true;
+    const[r1,r2]=remaining;
+    setTimeout(()=>{
+      r1.state='up';r2.state='up';
+      updateCard(r1.id);updateCard(r2.id);
+      flipped=[r1.id,r2.id];
+      setTimeout(()=>checkPair(),600);
+    },400);
   }
+}
+
+function updateProgress(){
+  document.getElementById('progress-bar').style.width=(matched/cards.length*100)+'%';
 }
 
 function updateCard(idx,extra){
@@ -279,6 +377,8 @@ function updateCard(idx,extra){
   const c=cards[idx];
   const cls={down:'face-down',up:'face-up',matched:'face-up matched',wrong:'face-up wrong'};
   el.className='card '+(cls[c.state]||'face-down');
+  if(extra==='matched')el.classList.add('matched');
+  if(extra==='wrong')el.classList.add('wrong');
 }
 
 function endGame(){
@@ -318,7 +418,9 @@ function showRanking(){
   });
   const list=document.getElementById('rank-list');
   const entries=data[rankDiff]||[];
-  list.innerHTML=entries.length?entries.map((e,i)=>`<li class="rank-item"><div class="rank-no ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i+1}</div><div class="rank-info"><div class="rank-score">${e.score}点</div><div class="rank-detail">${e.time}秒 · ミス${e.miss}回</div></div><div class="rank-date">${e.date}</div></li>`).join(''):'<div class="empty-rank">まだ記録がありません<br>挑戦してみよう！</div>';
+  list.innerHTML=entries.length
+    ?entries.map((e,i)=>`<li class="rank-item"><div class="rank-no ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i+1}</div><div class="rank-info"><div class="rank-score">${e.score}点</div><div class="rank-detail">${e.time}秒 · ミス${e.miss}回</div></div><div class="rank-date">${e.date}</div></li>`).join('')
+    :'<div class="empty-rank">まだ記録がありません<br>挑戦してみよう！</div>';
   show('ranking');
 }
 
