@@ -413,7 +413,7 @@ function show(s){['title','game','result','ranking'].forEach(n=>{document.getEle
     if (!title || document.getElementById('bday-banner')) return;
     var b = document.createElement('div');
     b.id = 'bday-banner';
-    b.textContent = '\u25ce 今月はちょっと特別な月みたいです ✨';
+    b.textContent = '\u25ce 特別な月を迎えたあなたに おめでとう ✨';
     /* ロゴの直後に挿入 */
     var logo = title.querySelector('.logo');
     if (logo && logo.nextSibling) title.insertBefore(b, logo.nextSibling);
