@@ -385,7 +385,7 @@ function show(s){['title','game','result','ranking'].forEach(n=>{document.getEle
    月が終わると自動で通常UIに戻る（GitHub更新不要）
    ========================================================== */
 (function(){
-  var BIRTHDAY_MONTHS = [2, 5, 10 /*, 他の月をここに追加: 例 8, 11 */];
+  var BIRTHDAY_MONTHS = [2, 5, 7 /*, 他の月をここに追加: 例 8, 11 */];
 
   var thisMonth = new Date().getMonth() + 1;
   if (BIRTHDAY_MONTHS.indexOf(thisMonth) === -1) return;
